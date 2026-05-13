@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowRight, Check, Mail } from "lucide-react";
+import { ArrowRight, Check, Eye, EyeClosed, Lock, Mail } from "lucide-react";
 
 import { AnimatedPage } from "@/components/layout/animated-page";
 import { AuthCard } from "@/components/auth/auth-card";
@@ -17,6 +17,7 @@ import Image from "next/image";
 export default function SignupPage() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const [formData, setFormData] = useState({
     email: "",
@@ -52,10 +53,10 @@ export default function SignupPage() {
   return (
     <AnimatedPage>
       <main className="relative flex min-h-screen items-center justify-center bg-slate-50 px-6 py-10">
-      {/* Ambient glow */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-[-120px] left-1/2 -translate-x-1/2 w-[520px] h-[520px] bg-blue-100/40 blur-3xl rounded-full" />
-      </div>
+        {/* Ambient glow */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-[-120px] left-1/2 -translate-x-1/2 w-[520px] h-[520px] bg-blue-100/40 blur-3xl rounded-full" />
+        </div>
 
         {/* stable card container */}
         <div className="relative z-10 w-full max-w-md">
@@ -100,7 +101,12 @@ export default function SignupPage() {
                           }}
                           className="flex size-8 items-center justify-center mb-2"
                         >
-                          <Image src={"/symbol.svg"} alt="logo" height={100} width={100}/>
+                          <Image
+                            src={"/symbol.svg"}
+                            alt="logo"
+                            height={100}
+                            width={100}
+                          />
                         </motion.div>
                       </div>
                       {/* heading */}
@@ -112,36 +118,54 @@ export default function SignupPage() {
 
                     {/* form */}
                     <form onSubmit={onSubmit} className="space-y-5">
-                      <FormField label="Email">
-                        <Input
-                          type="email"
-                          placeholder="you@studio.com"
-                          value={formData.email}
-                          onChange={(e) =>
-                            setFormData({
-                              ...formData,
-                              email: e.target.value,
-                            })
-                          }
-                        />
-                      </FormField>
+                      <Input
+                        label="Work email"
+                        placeholder="you@studio.com"
+                        leftIcon={<Mail size={16} />}
+                        value={formData.email}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            email: e.target.value,
+                          })
+                        }
+                      />
 
-                      <FormField
+                      <Input
                         label="Password"
+                        type={showPassword ? "text" : "password"}
+                        placeholder="Enter your password"
+                                                leftIcon={<Lock size={16} />}
                         helper="Use at least 8 characters."
-                      >
-                        <Input
-                          type="password"
-                          placeholder="Enter your password"
-                          value={formData.password}
-                          onChange={(e) =>
-                            setFormData({
-                              ...formData,
-                              password: e.target.value,
-                            })
-                          }
-                        />
-                      </FormField>
+                        rightIcon={
+                          showPassword ? (
+                            <Eye
+                              size={16}
+                              onMouseDown={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                              }}
+                              onClick={() => setShowPassword((prev) => !prev)}
+                            />
+                          ) : (
+                            <EyeClosed
+                              size={16}
+                              onMouseDown={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                              }}
+                              onClick={() => setShowPassword((prev) => !prev)}
+                            />
+                          )
+                        }
+                        value={formData.password}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            password: e.target.value,
+                          })
+                        }
+                      />
 
                       <Button type="submit" loading={loading}>
                         {loading ? "Creating workspace..." : "Create workspace"}
