@@ -1,18 +1,35 @@
 "use client";
 
 import clsx from "clsx";
-import { forwardRef, InputHTMLAttributes, ReactNode } from "react";
+import {
+  forwardRef,
+  InputHTMLAttributes,
+  ReactNode,
+} from "react";
 import { IconButton } from "./icon-button";
 
 type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   label?: string;
   helper?: string;
   leftIcon?: ReactNode;
+
   rightIcon?: ReactNode;
+  onRightIconClick?: () => void;
 };
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ label, helper, className, leftIcon, rightIcon, ...props }, ref) => {
+  (
+    {
+      label,
+      helper,
+      className,
+      leftIcon,
+      rightIcon,
+      onRightIconClick,
+      ...props
+    },
+    ref
+  ) => {
     return (
       <div className="w-full">
         {/* Label */}
@@ -38,26 +55,36 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               "hover:border-slate-300 focus:border-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-100",
               leftIcon && "pl-11",
               rightIcon && "pr-11",
-              className,
+              className
             )}
             {...props}
           />
 
           {/* Right icon */}
           {rightIcon && (
-            <div className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400">
-              <IconButton>{rightIcon}</IconButton>
-            </div>
+            <IconButton
+              type="button"
+              onMouseDown={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+              }}
+              onClick={onRightIconClick}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
+            >
+              {rightIcon}
+            </IconButton>
           )}
         </div>
 
         {/* Helper text */}
         {helper && (
-          <p className="mt-1.5 text-xs text-slate-500 ml-0.5">{helper}</p>
+          <p className="mt-1.5 text-xs text-slate-500 ml-0.5">
+            {helper}
+          </p>
         )}
       </div>
     );
-  },
+  }
 );
 
 Input.displayName = "Input";
