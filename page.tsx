@@ -135,29 +135,10 @@ export default function SignupPage() {
                         label="Password"
                         type={showPassword ? "text" : "password"}
                         placeholder="Enter your password"
-                                                leftIcon={<Lock size={16} />}
+                        leftIcon={<Lock size={16} />}
                         helper="Use at least 8 characters."
-                        rightIcon={
-                          showPassword ? (
-                            <Eye
-                              size={16}
-                              onMouseDown={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                              }}
-                              onClick={() => setShowPassword((prev) => !prev)}
-                            />
-                          ) : (
-                            <EyeClosed
-                              size={16}
-                              onMouseDown={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                              }}
-                              onClick={() => setShowPassword((prev) => !prev)}
-                            />
-                          )
-                        }
+                        rightIcon={showPassword ? <Eye size={16} /> : <EyeClosed size={16} />}
+                        onRightIconClick={() => setShowPassword((p) => !p)}
                         value={formData.password}
                         onChange={(e) =>
                           setFormData({
